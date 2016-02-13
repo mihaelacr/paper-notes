@@ -9,6 +9,27 @@
   * new activation function, relu for complex numbers
   * good results for Rnns example tasks (binary addition, etc), but not for a real life example
 
+# Exponential linear units
+  * http://arxiv.org/abs/1511.07289
+  * Motivation: increase speed of learning and classification accuracy
+  * Idea:
+    * avoid vanishing gradient by using identity for positive values, but have negative values which allow to push the mean unit activation towards zero
+    * zero mean activation brings the unit closer to the unit natural gradient
+    * units that have a non-zero mean activation act as bias for the next layer
+  * like batch normalization, they push the mean towards zero, but with less computational footprint
+  * Elu formula:
+    * x(f) = x for x >=0 and a(exp(x) - 1) for x < 0
+    * a is a tunable hyperparameter
+  * Idea behind natural gradient:
+    * The parameter space can be complicated and not euclidean => the direction of the gradient is no longer appropriate => account for the curvature of the space
+    * More [here](http://www.yaroslavvb.com/papers/amari-why.pdf)
+  * Proof in paper:
+    * Paper proves that zero mean activations speed up learning when the natural gradient is used
+    * This applies to all techniques that strive to get zero mean activations (including batch normalization)
+  * Results:
+    * improvement in accuracy for network with more than 5 layers
+
+
 # Neural networks with few multiplications
   * http://arxiv.org/abs/1510.03009
   * Motivation: big computational cost of NN training
