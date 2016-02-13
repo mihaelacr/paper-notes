@@ -9,6 +9,27 @@
   * new activation function, relu for complex numbers
   * good results for Rnns example tasks (binary addition, etc), but not for a real life example
 
+# Neural networks with few multiplications
+  * http://arxiv.org/abs/1510.03009
+  * Motivation: big computational cost of NN training
+  * Idea: avoid multiplication by binarizing weights (forward pass) and convert multiplication into binary shift (backward pass)
+  * mention of Completely Boolean networks: simplify test time computation with acceptable hit in accuracy, but no training time is saved.
+  * Binary connect:
+    * Traditional: y = h (Wx + b)
+    * Idea: sample each weight to be 1 or -1
+    * p(w_{ij}) = (w'_{ij} + 1) / 2, where w'_{ij} is the usual weight value, but constrained to be in between -1 and 1 (by being capped)
+    * random number generation has to be fast and not do a lot of multiplication for this to be worth it
+  * Ternary connect
+    * In NNs a lot of weights are 0 or close to 0 => allow weights to be 0
+    * if w'_{ij} > 0, use P(w_{ij} = 1) =  w'_{ij}, 0 otherwise
+    * if w'_{ij} < 0, use P(w_{ij} = - 1) =  - w'_{ij}, 0 otherwise
+  * Quantized backpropagation:
+    * do bit shifts in order to avoid multiplication, not for the gradient but for the input.
+  * they use batch normalization in their architecture
+  * Results:
+    * qualitative: a bit better than using simple NNs and CNNs
+    * no measure of speed improvements
+
 
 # Generative adversarial networks
   * http://arxiv.org/abs/1406.2661
