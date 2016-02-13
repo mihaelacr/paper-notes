@@ -29,6 +29,14 @@
   * Results:
     * improvement in accuracy for network with more than 5 layers
 
+# A Simple Way to Initialize RNNs of Relu
+  * http://arxiv.org/abs/1504.00941
+  * Motivation: RNNs hard to train due to vanishing & exploding gradients
+  * Idea: use the identity matrix (or a scaled version) to initialize the recurrent connections
+    * activation function: Relu
+    * Initialize biases to 0 and the recurrent connection to the identity matrix.
+  * Advantage: simple architecture compared to LSTMs
+  * Results: comparable with LSTM on a couple of toy examples + speech recognition
 
 # Neural networks with few multiplications
   * http://arxiv.org/abs/1510.03009
