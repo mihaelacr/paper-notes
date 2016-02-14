@@ -38,6 +38,13 @@
   * Advantage: simple architecture compared to LSTMs
   * Results: comparable with LSTM on a couple of toy examples + speech recognition
 
+# Recurrent neural network regularization
+  * http://arxiv.org/abs/1409.2329
+  * Use dropout for Recurrent Neural Nets for the input connections, but not for recurrent connections
+  * Results:
+    * minimize overfitting for LSTM training
+    * good results for language modelling and image caption
+
 # Neural networks with few multiplications
   * http://arxiv.org/abs/1510.03009
   * Motivation: big computational cost of NN training
