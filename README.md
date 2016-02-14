@@ -29,6 +29,29 @@
   * Results:
     * improvement in accuracy for network with more than 5 layers
 
+# Multilingual language processing from bytes
+ * http://arxiv.org/abs/1512.00103
+ * Motivation: use one model for multiple languages for POS and NAR
+ * Idea:
+    * use a sequence to sequence model to predict POS and NAR
+    * feed the model UTF-8 bytes (advantage: small vocabulary size)
+  * Model name: Byte to span
+  * At each time step the model does not predict a triple (start, len, pos), but rather learns to predict one of them at a different time step: t -> start, t+1 -> len, t+2 -> pos. The model learns not to mix them without much difficulty
+  * Mentions that language models benefit from CNNs over characters to generate word embeddings (more [here](http://arxiv.org/abs/1508.06615))
+  * Input segmentation:
+    * They want the model to work on long documents, but RNNs have problems modelling long sequences
+    * Instead, they split the input in segments of length K, using a sliding window
+    * Has the advantage of being able to perform inference in parallel (per split segment)
+    * Start and End predictions have a clear bound
+    * In their experiments, they use k=60
+  * Byte dropout:
+    * Randomly replace a fraction of the input bytes with a special token
+    * makes model ore robust
+    * only done for the input later
+  * Results:
+    * one model for 11 languages with better results than having language individual models
+    * requires no language specific engineering
+
 # Exploiting Similarities among Language for Machine Translation
   * http://arxiv.org/abs/1309.4168
   * Motivation: Increase the size of language dictionaries from monolingual data
@@ -39,7 +62,6 @@
       * take a word in the source language and compute its embedding
       * map the embedding to the target language using the learned mapping from the given dictionary
       * chose the word in the target language with the smallest cosine distance to the mapped embedding
-    *
   * Results:
     * Good sample translations from English to Spanish
   * Potential issue: at test time one needs to compute the cosine distance against all the words in the target vocabulary which can be very big. However, this is can be parallelized and clustering method can also be used to improve speed.
