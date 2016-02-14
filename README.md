@@ -29,6 +29,24 @@
   * Results:
     * improvement in accuracy for network with more than 5 layers
 
+# Exploiting Similarities among Language for Machine Translation
+  * http://arxiv.org/abs/1309.4168
+  * Motivation: Increase the size of language dictionaries from monolingual data
+  * Idea:
+    * It is easy to procure multilingual data, we can use that to learn embeddings in different languages
+    * Learn a linear mapping from embeddings in the source language to embeddings in the target language from a small source language to target language dictionary
+    * To expand the given source to target language dictionary:
+      * take a word in the source language and compute its embedding
+      * map the embedding to the target language using the learned mapping from the given dictionary
+      * chose the word in the target language with the smallest cosine distance to the mapped embedding
+    *
+  * Results:
+    * Good sample translations from English to Spanish
+  * Potential issue: at test time one needs to compute the cosine distance against all the words in the target vocabulary which can be very big. However, this is can be parallelized and clustering method can also be used to improve speed.
+  * Use cases:
+    * find mistakes in dictionaries
+    * expand dictionaries to new words
+
 # A Simple Way to Initialize RNNs of Relu
   * http://arxiv.org/abs/1504.00941
   * Motivation: RNNs hard to train due to vanishing & exploding gradients
