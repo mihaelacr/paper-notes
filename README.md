@@ -1,3 +1,21 @@
+# Variational autoencoders
+  * https://arxiv.org/abs/1312.6114
+  * Aim: density estimation
+  * How: Model P(x) as P(x|z) * P(z), where z are latent variables and P(z) is
+  a standard normal.
+  * P(x|z) can be modelled using a parametrized distributions, with the parameters learned by a neural network.
+  * Issue: when trying to find P(x) (after learning), we have to sample a lot of
+  z from the prior of z to get an accurate estimate of P(x), since a lot of
+  latents will not contribute to the data instance x (ie. P(x|z) will be low).
+  * Idea: When estimating x, instead of sampling from z, sample from a distribution Q(z|x) which models how likely it is that z will generate x. If we had this distribution, we would not need as many samples to obtain an accurate estimate of P(x).
+  * New aim: learn Q(z|x) when learning P(x|z) (hence the autoencoder formulation, Q(z|x) is the encoder distribution which models the distribution of the latents given the data, P(x|z) is the decoder distribution which models the encoder distribution of the data given the latents). The learning aim is to learn these two distribution to maximize the probability of the given data.
+  * How? Start with the KL between Q(z|x) and P(z|x) and find a lower bound for P(x). This bound is given by the expected value under Q(z|x) of log P(x|z) minus the KL between Q(z|x) and P(z) (the former being the posterior of z and the latter being the prior of z).
+  * For the VAE learning is done using gradient descent: both Q(z|x) and P(x|z) are distributions parametrized by a neural network. The key point of the paper is to ensure that gradients can be propagated through the encoder, by using the reparametrization trick. Without the reparametrization trick, in order to do a pass through the model (starting with a data point x and ending with the reconstruction of x), sampling would be needed after a forward pass in the encoder. Sampling after the encoder would make learning hard, since gradients would not backpropagate through sampling. The key observation of the paper is that for a lot of parametrized distributions, you can construct a sample from it by taking a sample of a non-parametrized distribution and applying a function of the parameters to that sample (for example, a sample of N(u, s^2) can be constructed by sampling N(0,1) and then applying lambda x: s * x + u to the sample). This trick allows the sampling to happen before the inputs are passed through the encoder, hence allowing the gradients to be backpropagated.
+  * Sampling from a VAE: Sample from the prior of z and do a forward pass through the encoder.
+  * Computing the approximate log probability of a data point under a VAE (note: this is just a lower bound). Compute the KL between Q(z|x) and P(z) and subtract it from the empirical estimate of expected value of log P(x|z) under Q(z|x). The first term (the KL, can often be obtained analytically for known distributions) and the second term can be estimated by sampling z from Q(z|x) and computing log P(x|z) using the sample.
+
+  ![VAE drawing](vae.JPG)
+
 # Generating images with recurrent adversarial networks
   * http://arxiv.org/abs/1602.05110
   * Motivation: generate good image samples
